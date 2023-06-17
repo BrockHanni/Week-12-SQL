@@ -1,43 +1,41 @@
-## User Story
+# Employee Managment System MYSQL
 
-AS A business owner
+This program helps manage multiple employees, jobs, managers, salaries, and much more!
 
-I WANT to be able to view and manage the departments, roles, and employees in my company
+## Installation
 
-SO THAT I can organize and plan my business
+To install, run npm install, then login to mysql, run SOURCE db/schema.sql, then SOURCE db/seeds.sql
 
-## Acceptance Criteria
+## Usage
 
-GIVEN a command-line application that accepts user input
+to use, you will need to run your sources, simply log into mysql, run SOURCE db/schema.sql then SOURCE db/seeds.sql to populate your existing jobs and employees. Then by running node server.js, you will be able to add an employee, make changes to an existing employee, create a new job, create a new department, and view all your changes in a templated table!
 
-<!-- WHEN I start the application
+## Test
 
-THEN I am presented with the following options: view all departments, view all roles, view all employees, add a department, add a role, add an employee, and update an employee role -->
-<!-- 
-WHEN I choose to view all departments
+To Test it, simply install the required apps (npm install) then run your mysql files (log into mysql (mysql -u root), run SOURCE db/schema.sql, then SOURCE db/seeds.sql) then input node server.js into your terminal. You will have full access to the employee database from there!
 
-THEN I am presented with a formatted table showing department names and department ids -->
+## Contributing/Contact
 
-<!-- WHEN I choose to view all roles
+To submit bug reports, feature requests, or pull requests, please email me at hannibr26@gmail.com, or visit my GitHub page: (https://github.com/BrockHanni/Week-12-SQL)
 
-THEN I am presented with the job title, role id, the department that role belongs to, and the salary for that role
+## License
 
-WHEN I choose to view all employees
+Licenses used: No licenses we're used in this app
 
-THEN I am presented with a formatted table showing employee data, including employee ids, first names, last names, job titles, departments, salaries, and managers that the employees report to
+## Deployment
 
-WHEN I choose to add a department
+Code the repo here https://github.com/BrockHanni/Week-12-SQL to run the code yourself!
 
-THEN I am prompted to enter the name of the department and that department is added to the database
+## Screenshots
 
-WHEN I choose to add a role
+INSERT SCREENSHOTS HERE
 
-THEN I am prompted to enter the name, salary, and department for the role and that role is added to the database -->
-
-WHEN I choose to add an employee
-
-THEN I am prompted to enter the employee’s first name, last name, role, and manager, and that employee is added to the database
-
-WHEN I choose to update an employee role
-
-THEN I am prompted to select an employee to update and their new role and this information is updated in the database
+## Table of Contents
+- [Installation](#installation)
+- [Usage](#usage)
+- [Test](#test)
+- [Contributing/Contact](#contributing/Contact)
+- [License](#license)
+- [Deployment](#deployment)
+- [Screenshots](#screenshots)
+- [Table of Contents](#table-of-contents)

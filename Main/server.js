@@ -1,6 +1,7 @@
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
 const fs = require('fs');
+const { up } = require('inquirer/lib/utils/readline');
 const PORT = process.env.PORT || 3001;
 
 const connection = mysql.createConnection({
@@ -83,7 +84,7 @@ function displayOptions() {
             break;
         case 'Update an Employees Role':
             console.log('You selected: Update an Employees Role');
-            // 
+            updateEmployeeRole();
             break;
         default:
           console.log('Invalid choice');
@@ -220,6 +221,43 @@ function addEmployee() {
                     displayOptions();
                 });
             });
+        });
+    });
+}
+function updateEmployeeRole() {
+    const sql = `SELECT * FROM employee`;
+    const sqlRoles = `SELECT * FROM jobs`;
+
+    connection.query(sql, (err, employees) => {
+        if (err) throw err;
+        connection.query(sqlRoles, (err, roles) => {
+            if (err) throw err;
+            inquirer.prompt([
+                {
+                    type: 'list',
+                    name: 'employee',
+                    message: 'Which employee would you like to update?',
+                    choices: employees.map(employee => employee.first_name)
+                },
+                {
+                    type: 'list',
+                    name: 'role',
+                    message: 'What is the new role of the employee?',
+                    choices: roles.map(role => role.title)
+                }
+            ])
+                .then(answer => {
+                    const employee = employees.find(emp => emp.first_name === answer.employee);
+                    const role = roles.find(role => role.title === answer.role);
+                    const updateSql = `UPDATE employee SET role_id = ? WHERE id = ?`;
+                    const params = [role.role_id, employee.id];
+
+                    connection.query(updateSql, params, (err, result) => {
+                        if (err) throw err;
+                        console.log(`Updated employee ${answer.employee} to ${answer.role}.`);
+                        displayOptions();
+                    });
+                });
         });
     });
 }
