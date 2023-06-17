@@ -71,11 +71,11 @@ function displayOptions() {
           break;
         case 'Add Department':
             console.log('You selected: Add Department');
-            // 
+            addDepartment();
             break;
         case 'Add Role':
             console.log('You selected: Add Role');
-            //
+            addRole();
             break;
         case 'Add Employee':
             console.log('You selected: Add Employee');
@@ -115,5 +115,63 @@ function viewEmployees() {
         if (err) throw err;
         console.table(res);
         displayOptions();
+    });
+}
+function addDepartment() {
+    inquirer.prompt({
+        type: 'input',
+        name: 'name',
+        message: 'What is the name of the department you would like to add?'
+    })
+        .then(answer => {
+            console.log(answer.name)
+            const sql = `INSERT INTO department (DepartmentName) VALUES ("${answer.name}")`;
+
+            connection.query(sql, (err, res) => {
+                if (err) throw err;
+                console.log(`Added department ${answer.name} to the database.`);
+                displayOptions();
+                console.log(answer.name);
+            });
+        });
+}
+function addRole() {
+    const sql = `SELECT * FROM department`;
+    connection.query(sql, (err, res) => {
+        if (err) throw err;
+        const departmentchoices = res.map((department) => {
+            return {
+               name: department.DepartmenName,
+               value: department.DepartmentID
+            };
+        });
+        inquirer.prompt([
+            {
+                type: 'input',
+                name: 'title',
+                message: 'What is the name of the role you would like to add?'
+            },
+            {
+                type: 'input',
+                name: 'salary',
+                message: 'Salary for this role:'
+            },
+            {
+                type: 'list',
+                name: 'department',
+                message: 'Which department does this role belong to?',
+                choices: departmentchoices,
+            },
+        ])
+            .then(answer => {
+                const departmentId = answer.department;
+                const sql = `INSERT INTO jobs (title, salary, DepartmentID) VALUES (?, ?, ?)`;
+                connection.query(sql, [answer.title, answer.salary, departmentId],
+                 (err, res) => {
+                    if (err) throw err;
+                    console.log(`Added role ${answer.title} to the database.`);
+                    displayOptions();
+                });
+            });
     });
 }
