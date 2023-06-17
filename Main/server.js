@@ -79,7 +79,7 @@ function displayOptions() {
             break;
         case 'Add Employee':
             console.log('You selected: Add Employee');
-            // 
+            addEmployee(); 
             break;
         case 'Update an Employees Role':
             console.log('You selected: Update an Employees Role');
@@ -173,5 +173,53 @@ function addRole() {
                     displayOptions();
                 });
             });
+    });
+}
+function addEmployee() {
+    connection.query(`SELECT * FROM employee`, (err, employees) => {
+        if (err) throw err;
+        connection.query(`SELECT * FROM jobs`, (err, roles) => {
+            if (err) throw err;
+
+            inquirer.prompt([
+                {
+                    type: 'input',
+                    name: 'first_name',
+                    message: "What is the new employee's first name?"
+                },
+                {
+                    type: 'input',
+                    name: 'last_name',
+                    message: "What is the new employee's last name?"
+                },
+                {
+                    type: 'list',
+                    name: 'role',
+                    message: "What is the new employee's role?",
+                    choices: roles.map(role => role.title)
+                },
+                {
+                    type: 'list',
+                    name: 'manager',
+                    message: "Who is the new employee's manager?",
+                    choices: employees.map(manager => `${manager.first_name} ${manager.last_name}`)
+                }
+            ])
+            .then(answer => {
+                const { first_name, last_name, role, manager } = answer;
+
+                const selectedRole = roles.find(r => r.title === role);
+                const selectedManager = employees.find(e => `${e.first_name} ${e.last_name}` === manager);
+
+                const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)`;
+                const params = [first_name, last_name, selectedRole.role_id, selectedManager.id];
+
+                connection.query(sql, params, (err, res) => {
+                    if (err) throw err;
+                    console.log(`Added employee ${first_name} ${last_name} to the database.`);
+                    displayOptions();
+                });
+            });
+        });
     });
 }
