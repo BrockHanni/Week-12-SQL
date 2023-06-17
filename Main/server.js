@@ -1,24 +1,50 @@
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
-
+const fs = require('fs');
 const PORT = process.env.PORT || 3001;
 
-const db = mysql.createConnection(
-    {
-        host: 'localhost',
-        user: 'root',
-        password: '',
-        database: 'company_db'
-    },
-    console.log(`Connected to the employee_tracker_db database.`)
-);
+const connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'company_db',
+});
 
-db.connect(err => {
-    if (err) throw err;
-    console.log('Database connected.');
-    displayOptions();
+function executeSqlScript(scriptPath) {
+    const script = fs.readFileSync(scriptPath, 'utf8');
+    const statements = script.split(';').filter(Boolean);
+
+    let currentStatement = '';
+
+    statements.forEach((statement) => {
+        currentStatement += statement.trim();
+
+        if (currentStatement.endsWith(';')) {
+            connection.query(currentStatement, (error, results) => {
+                if (error) {
+                    console.error('Error executing SQL statement:', error);
+                } else {
+                    console.log('SQL statement executed successfully:', currentStatement);
+                }
+            });
+
+            currentStatement = '';
+        }
+    });
 }
-);
+  
+// Connect to the MySQL database
+connection.connect((err) => {
+    if (err) {
+      console.error('Error connecting to MySQL:', err);
+      return;
+    }
+    console.log('Connected to MySQL database.');
+    executeSqlScript('./db/schema.sql');
+    executeSqlScript('./db/seeds.sql');
+    displayOptions();
+});
+
 function displayOptions() {
   inquirer
     .prompt([
@@ -37,11 +63,11 @@ function displayOptions() {
           break;
         case 'View Roles':
           console.log('You selected: View Roles');
-          // 
+            viewRoles();
           break;
         case 'View Employees':
           console.log('You selected: View Employees');
-          // 
+          viewEmployees();
           break;
         case 'Add Department':
             console.log('You selected: Add Department');
@@ -67,7 +93,25 @@ function displayOptions() {
 function viewDepartments() {
     const sql = `SELECT * FROM department`;
 
-    db.query(sql, (err, res) => {
+    connection.query(sql, (err, res) => {
+        if (err) throw err;
+        console.table(res);
+        displayOptions();
+    });
+}
+function viewRoles() {
+    const sql = `SELECT * FROM jobs`;
+
+    connection.query(sql, (err, res) => {
+        if (err) throw err;
+        console.table(res);
+        displayOptions();
+    });
+}
+function viewEmployees() {
+    const sql = `SELECT * FROM employee`;
+
+    connection.query(sql, (err, res) => {
         if (err) throw err;
         console.table(res);
         displayOptions();
