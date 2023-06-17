@@ -28,7 +28,7 @@ Code the repo here https://github.com/BrockHanni/Week-12-SQL to run the code you
 
 ## Video-Walkthrough
 
-<video src="assets/mysql.mp4" controls title="Title"></video>
+https://github.com/BrockHanni/Week-12-SQL/assets/106788919/c388075b-6976-45ae-b5df-94b33199d7bf
 
 ## Table of Contents
 - [Installation](#installation)
