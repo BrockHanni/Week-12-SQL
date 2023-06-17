@@ -12,7 +12,7 @@ to use, you will need to run your sources, simply log into mysql, run SOURCE db/
 
 ## Test
 
-To Test it, simply install the required apps (npm install) then run your mysql files (log into mysql (mysql -u root), run SOURCE db/schema.sql, then SOURCE db/seeds.sql) then input node server.js into your terminal. You will have full access to the employee database from there!
+To Test it, simply install the required apps (npm install) then run your mysql files (log into mysql (mysql -u root), run SOURCE db/schema.sql, then SOURCE db/seeds.sql. Remember to quit out of MYSQL) then input node server.js into your terminal. You will have full access to the employee database from there!
 
 ## Contributing/Contact
 
@@ -26,9 +26,9 @@ Licenses used: No licenses we're used in this app
 
 Code the repo here https://github.com/BrockHanni/Week-12-SQL to run the code yourself!
 
-## Screenshots
+## Video-Walkthrough
 
-INSERT SCREENSHOTS HERE
+<video src="assets/mysql.mp4" controls title="Title"></video>
 
 ## Table of Contents
 - [Installation](#installation)
@@ -37,5 +37,5 @@ INSERT SCREENSHOTS HERE
 - [Contributing/Contact](#contributing/Contact)
 - [License](#license)
 - [Deployment](#deployment)
-- [Screenshots](#screenshots)
+- [Video-Walkthrough](#video-walkthrough)
 - [Table of Contents](#table-of-contents)
